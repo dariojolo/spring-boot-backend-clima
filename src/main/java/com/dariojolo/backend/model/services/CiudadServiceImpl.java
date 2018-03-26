@@ -16,6 +16,7 @@ public class CiudadServiceImpl implements ICiudadService{
 
 	@Autowired
 	private ICiudadDao ciudadDao;
+	
 	@Override
 	@Transactional(readOnly=true)
 	public List<Ciudad> findAll() {

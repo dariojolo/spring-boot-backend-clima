@@ -1,6 +1,8 @@
 package com.dariojolo.backend;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,10 +20,7 @@ import com.dariojolo.backend.models.entities.Ciudad;
 public class SpringBootBackendClimaApplication implements CommandLineRunner{
 
 	@Autowired
-	private IBoardDao boardDao;
-	
-	@Autowired
-	private ICiudadDao ciudadDao;
+	private IBoardService boardService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootBackendClimaApplication.class, args);
@@ -32,9 +31,9 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		// TODO Auto-generated method stub
 		
 		Board board2 = new Board();
-		board2.setId(2L);
+		board2.setId(3L);
 		board2.setNombre("board2");
-		board2.setUsuario("dario");
+		board2.setUsuario("Dario");
 		
 		Ciudad ciudad3 = new Ciudad();
 		ciudad3.setNombre("Buenos Aires");
@@ -51,6 +50,7 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		board2.getCiudades().add(ciudad3);
 		board2.getCiudades().add(ciudad4);
 		
-		boardDao.save(board2);
+		boardService.save(board2);
+        
 	}
 }

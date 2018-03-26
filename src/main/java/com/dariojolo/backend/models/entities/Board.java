@@ -1,9 +1,7 @@
 package com.dariojolo.backend.models.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,17 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.validator.cfg.context.Cascadable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import net.bytebuddy.asm.Advice.This;
 
 @Entity
 @Table(name = "boards")
 public class Board implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -34,6 +28,7 @@ public class Board implements Serializable {
 	private String nombre;
 	private String usuario;
 	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY,
 				mappedBy = "board")
@@ -71,6 +66,12 @@ public class Board implements Serializable {
 		this.usuario = usuario;
 	}
 
+	@Override
+	public String toString() {
+		return "Board [id=" + id + ", nombre=" + nombre + ", usuario=" + usuario + ", ciudades=" + ciudades + "]";
+	}
+
+	
 	
 }
 

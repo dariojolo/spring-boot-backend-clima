@@ -14,10 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="ciudades")
 public class Ciudad implements Serializable {
-
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,9 +31,12 @@ public class Ciudad implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board", nullable = false)
+	@JoinColumn(name="board_id", nullable = false)
 	private Board board;
+
+	
 
 	public Board getBoard() {
 		return board;
