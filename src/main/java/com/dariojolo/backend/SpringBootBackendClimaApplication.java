@@ -47,8 +47,17 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		ciudad4.setTemperatura("12");
 		ciudad4.setBoard(board2);
 		
+		
+		Ciudad ciudad5 = new Ciudad();
+		ciudad5.setNombre("Santiago");
+		ciudad5.setFecha(new Date());
+		ciudad5.setTemperatura("12");
+		ciudad5.setBoard(board2);
+		
+		
 		board2.getCiudades().add(ciudad3);
 		board2.getCiudades().add(ciudad4);
+		board2.getCiudades().add(ciudad5);
 		
 		boardService.save(board2);
         

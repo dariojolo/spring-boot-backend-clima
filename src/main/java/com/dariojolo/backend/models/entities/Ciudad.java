@@ -31,9 +31,8 @@ public class Ciudad implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 	
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_id", nullable = false)
+	@JoinColumn(name="board", nullable = false)
 	private Board board;
 
 	
