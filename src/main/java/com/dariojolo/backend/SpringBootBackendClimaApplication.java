@@ -35,6 +35,11 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		board2.setNombre("board2");
 		board2.setUsuario("Dario");
 		
+		Board board3 = new Board();
+		board3.setId(4L);
+		board3.setNombre("Nuevo board");
+		board3.setUsuario("Pepe");
+		
 		Ciudad ciudad3 = new Ciudad();
 		ciudad3.setNombre("Buenos Aires");
 		ciudad3.setFecha(new Date());
@@ -54,12 +59,31 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		ciudad5.setTemperatura("12");
 		ciudad5.setBoard(board2);
 		
+		Ciudad ciudad6 = new Ciudad();
+		ciudad6.setNombre("New York");
+		ciudad6.setFecha(new Date());
+		ciudad6.setTemperatura("12");
+		ciudad6.setBoard(board3);
+		
+		
+		Ciudad ciudad7 = new Ciudad();
+		ciudad7.setNombre("Santiago");
+		ciudad7.setFecha(new Date());
+		ciudad7.setTemperatura("12");
+		ciudad7.setBoard(board3);
+		
 		
 		board2.getCiudades().add(ciudad3);
 		board2.getCiudades().add(ciudad4);
 		board2.getCiudades().add(ciudad5);
 		
+		board3.getCiudades().add(ciudad6);
+		board3.getCiudades().add(ciudad7);
+		
+		
 		boardService.save(board2);
+		
+		boardService.save(board3);
         
 	}
 }

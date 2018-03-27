@@ -1,7 +1,9 @@
 package com.dariojolo.backend.models.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,7 +34,7 @@ public class Board implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL,
 				fetch = FetchType.LAZY,
 				mappedBy = "board")
-	private Set<Ciudad> ciudades = new HashSet<>(); 
+	private List<Ciudad> ciudades = new ArrayList<>(); 
 
 	public Long getId() {
 		return id;
@@ -54,11 +56,11 @@ public class Board implements Serializable {
 		return usuario;
 	}
 
-	public Set<Ciudad> getCiudades() {
+	public List<Ciudad> getCiudades() {
 		return ciudades;
 	}
 
-	public void setCiudades(Set<Ciudad> ciudades) {
+	public void setCiudades(List<Ciudad> ciudades) {
 		this.ciudades = ciudades;
 	}
 

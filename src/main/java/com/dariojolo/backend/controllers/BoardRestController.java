@@ -73,6 +73,117 @@ public class BoardRestController {
 		}
 	    return map;
 	}
+	
+	@GetMapping("/boards3")
+	public List<Board> get3() {
+		
+		List<Board> listaBoards = new ArrayList<Board>();
+		
+
+		for (Board board : (List<Board>) boardService.findAll()) {
+			Board board2 = new Board();
+			board2.setId(board.getId());
+			board2.setNombre(board.getNombre());
+			board2.setUsuario(board.getUsuario());
+			
+			List<Ciudad> ciudades = new ArrayList<>();
+			int i = 1;
+			for (Ciudad ciudad : board.getCiudades()) {
+				System.out.println("En ciudad: " + ciudad.getNombre());
+				ciudades.add(ciudad);
+				// board.getCiudades().add(ciudad);
+			}
+			board2.setCiudades(ciudades);
+			listaBoards.add(board2);
+		}
+		return listaBoards;
+	}
+	
+	@GetMapping("/boards4")
+	public List<HashMap<String, Object>> get4() {
+		List<HashMap<String, Object>> listado = new ArrayList<HashMap<String, Object>>();
+		
+		for (Board board : (List<Board>) boardService.findAll()) {
+		HashMap<String, Object> map = new HashMap<>();
+	    map.put("id", board.getId());
+		map.put("nombre", board.getNombre());
+	    map.put("usuario", board.getUsuario());
+	    HashMap<String, Ciudad> ciudades = new HashMap<>();
+	    
+	    for (Ciudad ciudad : board.getCiudades()) {
+			System.out.println("En ciudad: " + ciudad.getNombre());
+			ciudades.put(ciudad.getId()+"", ciudad);
+			//board.getCiudades().add(ciudad);
+			}
+	    map.put("ciudades", ciudades);
+		listado.add(map);
+		}
+	    return listado;
+	}
+	
+	/* 
+	 @GetMapping("/boards3")
+     public HashMap<String, Board> get3() {
+     
+         List<HashMap<String, Board>> listaBoards = new ArrayList<HashMap<String, Board>>();
+         
+         for (Board board : (List<Board>) boardService.findAll()) {
+             HashMap<String, Object> mapBoard = new HashMap<String, Object>();
+             
+             mapBoard.put("id", board.getId());
+             mapBoard.put("nombre", board.getNombre());
+             mapBoard.put("usuario", board.getUsuario());
+         
+             int i = 1;
+             List<HashMap> listaCiudades = new ArrayList<>();
+             for (Ciudad ciudad : board.getCiudades()) {
+                  HashMap<String, Object> mapCiudad = new HashMap<>();
+                 mapCiudad.put("id", ciudad.getId());
+                 mapCiudad.put("nombre", ciudad.getNombre());
+                 mapCiudad.put("temperatura", ciudad.getTemperatura());
+                 mapCiudad.put("fecha", ciudad.getFecha());
+                 listaCiudades.add(mapCiudad);
+             }
+             
+             mapBoard.put("ciudades", listaCiudades);
+             listaBoards.addAll("",mapBoard);
+         }
+         
+         return  listaBoards;
+     }
+	 
+
+     @GetMapping("/boards4")
+     public HashMap<String, Object> get4() {
+     
+         List<HashMap> listaBoards = new ArrayList<>();
+         
+         for (Board board : (List<Board>) boardService.findAll()) {
+         
+             Board b = new Board();
+             b.setId(board.getId());
+             b.setNombre(board.getNombre());
+             b.setUsuario(board.getUsuario());
+         
+             List<HashMap> listaCiudades = new ArrayList<>();
+             
+             for (Ciudad ciudad : board.getCiudades()) {
+                 Ciudad c = new Ciudad();
+                 c.setId(ciudad.getId());
+                 c.setNombre(ciudad.getNombre());
+                 c.setTemperatura(ciudad.getTemperatura());
+                 c.setFecha(ciudad.getFecha());
+                 listaCiudades.add(1,c);
+             }
+             
+             b.setCiudades(listaCiudades);
+             
+             listaBoards.add(b);
+         }
+         
+         return listaBoards;
+     }*/
+	 
 	/*public ObjectNode sayHello() {
 		for (Board board : (List<Board>) boardService.findAll()) {
 	    ObjectNode objectNode = mapper.createObjectNode();
