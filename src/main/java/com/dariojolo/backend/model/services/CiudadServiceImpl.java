@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dariojolo.backend.models.dao.ICiudadDao;
+import com.dariojolo.backend.models.entities.Board;
 import com.dariojolo.backend.models.entities.Ciudad;
 
 @Service
@@ -24,10 +25,21 @@ public class CiudadServiceImpl implements ICiudadService{
 		return (List<Ciudad>) ciudadDao.findAll();
 	}
 	@Override
-	public void save(Ciudad ciudad) {
+	public Ciudad save(Ciudad ciudad) {
 		// TODO Auto-generated method stub
-		ciudadDao.save(ciudad);
+		return ciudadDao.save(ciudad);
 		
+	}
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		ciudadDao.deleteById(id);
+	}
+	@Override
+	@Transactional(readOnly=true)
+	public Ciudad findById(Long id) {
+		// TODO Auto-generated method stub
+		return ciudadDao.findById(id).orElse(null);
 	}
 
 }

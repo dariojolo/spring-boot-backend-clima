@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dariojolo.backend.models.dao.IBoardDao;
 import com.dariojolo.backend.models.entities.Board;
+import com.dariojolo.backend.models.entities.Ciudad;
 
 @Service
 public class BoardServiceImpl implements IBoardService{
@@ -23,8 +24,30 @@ public class BoardServiceImpl implements IBoardService{
 	}
 
 	@Override
-	public void save(Board board) {
-		boardDao.save(board);
+	@Transactional(readOnly=true)
+	public Board save(Board board) {
+		return boardDao.save(board);
 	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Board findByNombre(String nombre) {
+		// TODO Auto-generated method stub
+		return  (Board) boardDao.findByNombre(nombre);
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		boardDao.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Board findById(Long id) {
+		// TODO Auto-generated method stub
+		return boardDao.findById(id).orElse(null);
+	}
+
 
 }

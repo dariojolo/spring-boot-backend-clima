@@ -7,6 +7,8 @@ import com.dariojolo.backend.models.entities.Ciudad;
 public interface ICiudadService {
 	
 	public List<Ciudad>findAll();
-	public void save(Ciudad ciudad);
+	public Ciudad save(Ciudad ciudad);
+	public void delete(Long id);
+	public Ciudad findById(Long id);
 
 }
