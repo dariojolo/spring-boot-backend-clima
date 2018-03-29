@@ -73,7 +73,7 @@ public class BoardRestController {
 	public Board show(@PathVariable Long id) {
 		return boardService.findById(id);
 	}
-	//Obtener un board por ID
+	//Obtener un board por nombre
 		@GetMapping("/boards/nombre/{usuario}")
 		public Board showByNombre(@PathVariable String usuario) {
 			
@@ -81,10 +81,13 @@ public class BoardRestController {
 		}
 
 	//Obtener una ciudad por ID
-	//	@GetMapping("/boards/ciudades/{id}")
-	//	public Ciudad showC(@PathVariable Long id) {
-	//		return ciudadService.findById(id);
-	//	}
+		@GetMapping("/boards/Eciudades/{id}")
+		public Ciudad showC(@PathVariable Long id) {
+			System.out.println("ID Recibido: " + id);
+			Ciudad c =  ciudadService.findById(id);			
+			System.out.println("Ciudad obtenida: " + c.getNombre());
+			return c;
+		}
 	
 
 	@PostMapping("/boards")
@@ -92,12 +95,15 @@ public class BoardRestController {
 	public Board create(@RequestBody Board board) {
 		return boardService.save(board);
 	}
+	//Guardar una ciudad
 	@PostMapping("/boards/ciudades")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ciudad createC(@RequestBody Ciudad ciudad) {
+		ciudad.setTemperatura("33");
 		return ciudadService.save(ciudad);
 	}
 
+	//Actualizar un board
 	@PutMapping("/boards/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Board update(@RequestBody Board board, @PathVariable Long id) {
@@ -107,7 +113,8 @@ public class BoardRestController {
 
 		return boardService.save(boardActual);
 	}
-	@PutMapping("/boards/ciudades{id}")
+	//Editar una ciudad
+	@PutMapping("/boards/ciudades/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ciudad updateC(@RequestBody Ciudad ciudad, @PathVariable Long id) {
 		Ciudad ciudadActual = ciudadService.findById(id);
@@ -125,7 +132,9 @@ public class BoardRestController {
 	@DeleteMapping("/boards/ciudades/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteC(@PathVariable Long id) {
+		System.out.println("Ciudad a eliminar " + id);
 		ciudadService.delete(id);
+		System.out.println("Ciudad eliminada");
 	}
 
 }
