@@ -12,6 +12,7 @@ public interface IBoardService {
 
 	public List<Board>findAll();
 	public Board findByNombre(String nombre);
+	public Board findByUsuario(String usuario);
 	public Board save(Board board);
 	public void delete(Long id);
 	public Board findById(Long id);

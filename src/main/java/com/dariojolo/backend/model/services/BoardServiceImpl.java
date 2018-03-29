@@ -37,6 +37,13 @@ public class BoardServiceImpl implements IBoardService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
+	public Board findByUsuario(String usuario) {
+		// TODO Auto-generated method stub
+		return  (Board) boardDao.findByUsuario(usuario);
+	}
+	
+	@Override
 	@Transactional
 	public void delete(Long id) {
 		boardDao.deleteById(id);

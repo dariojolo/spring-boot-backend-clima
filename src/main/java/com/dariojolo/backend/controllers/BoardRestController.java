@@ -73,12 +73,18 @@ public class BoardRestController {
 	public Board show(@PathVariable Long id) {
 		return boardService.findById(id);
 	}
+	//Obtener un board por ID
+		@GetMapping("/boards/nombre/{usuario}")
+		public Board showByNombre(@PathVariable String usuario) {
+			
+			return boardService.findByUsuario(usuario);
+		}
 
 	//Obtener una ciudad por ID
-		@GetMapping("/boards/ciudades/{id}")
-		public Ciudad showC(@PathVariable Long id) {
-			return ciudadService.findById(id);
-		}
+	//	@GetMapping("/boards/ciudades/{id}")
+	//	public Ciudad showC(@PathVariable Long id) {
+	//		return ciudadService.findById(id);
+	//	}
 	
 
 	@PostMapping("/boards")
