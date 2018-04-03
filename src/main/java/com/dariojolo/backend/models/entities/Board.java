@@ -32,7 +32,7 @@ public class Board implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL,
-				fetch = FetchType.EAGER,
+				fetch = FetchType.LAZY,
 				mappedBy = "board")
 	private List<Ciudad> ciudades = new ArrayList<>(); 
 

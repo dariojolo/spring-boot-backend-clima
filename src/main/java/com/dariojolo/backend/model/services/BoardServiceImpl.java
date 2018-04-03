@@ -24,7 +24,7 @@ public class BoardServiceImpl implements IBoardService{
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional
 	public Board save(Board board) {
 		return boardDao.save(board);
 	}
@@ -32,15 +32,13 @@ public class BoardServiceImpl implements IBoardService{
 	@Override
 	@Transactional(readOnly=true)
 	public Board findByNombre(String nombre) {
-		// TODO Auto-generated method stub
 		return  (Board) boardDao.findByNombre(nombre);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Board findByUsuario(String usuario) {
-		// TODO Auto-generated method stub
-		return  (Board) boardDao.findByUsuario(usuario);
+	public List<Board> findByUsuario(String usuario) {
+		return  (List<Board>) boardDao.findByUsuario(usuario);
 	}
 	
 	@Override
@@ -52,7 +50,6 @@ public class BoardServiceImpl implements IBoardService{
 	@Override
 	@Transactional(readOnly=true)
 	public Board findById(Long id) {
-		// TODO Auto-generated method stub
 		return boardDao.findById(id).orElse(null);
 	}
 

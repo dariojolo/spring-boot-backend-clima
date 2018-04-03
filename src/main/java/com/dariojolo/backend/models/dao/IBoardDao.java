@@ -8,5 +8,5 @@ import com.dariojolo.backend.models.entities.Board;
 
 public interface IBoardDao extends CrudRepository<Board, Long>{
 	public Board findByNombre(String nombre);
-	public Board findByUsuario(String usuario);
+	public List<Board> findByUsuario(String usuario);
 }
