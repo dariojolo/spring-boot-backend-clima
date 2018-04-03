@@ -32,7 +32,7 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		
 		Board board2 = new Board();
 		board2.setId(3L);
-		board2.setNombre("board2");
+		board2.setNombre("Las ciudades de Dario");
 		board2.setUsuario("Dario");
 		
 		Board board3 = new Board();
