@@ -136,11 +136,10 @@ public class BoardRestController {
 	// Editar una ciudad
 	@PutMapping("/boards/ciudades/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Ciudad updateC(@RequestBody Ciudad ciudad, @PathVariable Long id) {
+	public Ciudad updateC(@RequestBody Ciudad ciudad, @PathVariable Long id) throws IOException, ParseException {
 		Ciudad ciudadActual = ciudadService.findById(id);
-
+		obtenerTemperatura(ciudadActual);
 		ciudadActual.setNombre(ciudad.getNombre());
-
 		return ciudadService.save(ciudadActual);
 	}
 
