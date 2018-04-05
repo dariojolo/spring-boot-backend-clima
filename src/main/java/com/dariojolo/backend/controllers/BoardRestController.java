@@ -2,11 +2,14 @@ package com.dariojolo.backend.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.h2.util.New;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.WebSocketSession;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.dariojolo.backend.model.services.IBoardService;
 import com.dariojolo.backend.model.services.ICiudadService;
@@ -35,12 +42,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/api")
 public class BoardRestController {
 
+	private final SimpMessagingTemplate template;
+	
 	@Autowired
 	private IBoardService boardService;
 
 	@Autowired
 	private ICiudadService ciudadService;
+	
+	
+	@Autowired
+	BoardRestController(SimpMessagingTemplate template){
+		this.template = template;
+	}
 
+	
+	@MessageMapping("/send/message")
+	public void onReceiveMessage(String message) {
+		
+		this.template.convertAndSend("/topic",  message);
+	}
+	
+	
 	// Lista de Boards
 	@GetMapping("/boards")
 	public List<HashMap<String, Object>> get() {
@@ -57,6 +80,7 @@ public class BoardRestController {
 				System.out.println("En ciudad: " + ciudad.getNombre());
 				ciudades.put(ciudad.getId() + "", ciudad);
 				// board.getCiudades().add(ciudad);
+				this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			}
 			map.put("ciudades", ciudades);
 			listado.add(map);
@@ -71,6 +95,7 @@ public class BoardRestController {
 		List<Ciudad> listado = new ArrayList<>();
 		Board board = (Board) boardService.findByNombre(nombre);
 		for (Ciudad ciudad : board.getCiudades()) {
+			this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			System.out.println("Ciudad agregada: " + ciudad.getNombre());
 			listado.add(ciudad);
 		}
