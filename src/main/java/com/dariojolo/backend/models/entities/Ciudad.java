@@ -82,4 +82,9 @@ public class Ciudad implements Serializable {
 		this.fecha = fecha;
 	}
 
+	@Override
+	public String toString() {
+		return "Ciudad [id=" + id + ", nombre=" + nombre + ", temperatura=" + temperatura + ", fecha=" + fecha + "]";
+	}
+
 }

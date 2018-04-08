@@ -2,14 +2,11 @@ package com.dariojolo.backend.controllers;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.h2.util.New;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.socket.WebSocketSession;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -58,9 +54,9 @@ public class BoardRestController {
 
 	
 	@MessageMapping("/send/message")
-	public void onReceiveMessage(String message) {
+	public void onReceiveMessage(Ciudad ciudad) {
 		
-		this.template.convertAndSend("/topic",  message);
+		this.template.convertAndSend("/topic",  ciudad);
 	}
 	
 	
@@ -80,7 +76,7 @@ public class BoardRestController {
 				System.out.println("En ciudad: " + ciudad.getNombre());
 				ciudades.put(ciudad.getId() + "", ciudad);
 				// board.getCiudades().add(ciudad);
-				this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
+				//this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			}
 			map.put("ciudades", ciudades);
 			listado.add(map);
@@ -95,7 +91,7 @@ public class BoardRestController {
 		List<Ciudad> listado = new ArrayList<>();
 		Board board = (Board) boardService.findByNombre(nombre);
 		for (Ciudad ciudad : board.getCiudades()) {
-			this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
+			//this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			System.out.println("Ciudad agregada: " + ciudad.getNombre());
 			listado.add(ciudad);
 		}
@@ -141,6 +137,7 @@ public class BoardRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ciudad createC(@RequestBody Ciudad ciudad) throws IOException, ParseException {
 		obtenerTemperatura(ciudad);
+		
 		return ciudadService.save(ciudad);
 	}
 
@@ -165,6 +162,7 @@ public class BoardRestController {
 		Ciudad ciudadActual = ciudadService.findById(id);
 		obtenerTemperatura(ciudadActual);
 		ciudadActual.setNombre(ciudad.getNombre());
+		onReceiveMessage(ciudad);
 		return ciudadService.save(ciudadActual);
 	}
 
@@ -224,6 +222,7 @@ public class BoardRestController {
 		    JsonNode temp = condition.get("temp");
 		    JsonNode date = condition.get("date");
 		    ciudad.setTemperatura(temp.asText());
+		    
 		  /*  System.out.println("Fecha: " + date);
 		    String date_s = date.toString();
 		    SimpleDateFormat dt = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm aa z"); 
