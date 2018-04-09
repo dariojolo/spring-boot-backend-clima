@@ -24,26 +24,21 @@ public class CiudadServiceImpl implements ICiudadService{
 	@Override
 	@Transactional(readOnly=true)
 	public List<Ciudad> findAll() {
-		// TODO Auto-generated method stub
 		return (List<Ciudad>) ciudadDao.findAll();
 	}
 	@Override
 	public Ciudad save(Ciudad ciudad) {
-		// TODO Auto-generated method stub
 		return ciudadDao.save(ciudad);
 		
 	}
 	@Override
 	@Transactional
 	public void deleteById(Long id) {
-		logger.debug("ID: " + id);
-		System.out.println("En Impl: " + id);
 		ciudadDao.deleteById(id);
 	}
 	@Override
 	@Transactional(readOnly=true)
 	public Ciudad findById(Long id) {
-		// TODO Auto-generated method stub
 		return ciudadDao.findById(id).orElse(null);
 	}
 

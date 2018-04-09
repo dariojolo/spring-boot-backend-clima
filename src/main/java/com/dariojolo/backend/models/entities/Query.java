@@ -33,20 +33,4 @@ public class Query {
 	public void setResultado(Map<String, String> resultado) {
 		this.resultado = resultado;
 	}
-    
-    
-    /*"results": {
-        "channel": {
-            "item": {
-                "condition": {
-                    "code": "29",
-                    "date": "Mon, 02 Apr 2018 07:00 PM ART",
-                    "temp": "21",
-                    "text": "Partly Cloudy"
-                }
-            }
-        }
-    }*/
-
-
 }

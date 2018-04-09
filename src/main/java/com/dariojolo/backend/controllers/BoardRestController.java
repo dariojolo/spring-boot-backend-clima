@@ -32,34 +32,30 @@ import com.dariojolo.backend.models.entities.Ciudad;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class BoardRestController {
 
 	private final SimpMessagingTemplate template;
-	
+
 	@Autowired
 	private IBoardService boardService;
 
 	@Autowired
 	private ICiudadService ciudadService;
-	
-	
+
 	@Autowired
-	BoardRestController(SimpMessagingTemplate template){
+	BoardRestController(SimpMessagingTemplate template) {
 		this.template = template;
 	}
 
-	
 	@MessageMapping("/send/message")
 	public void onReceiveMessage(Ciudad ciudad) {
-		
-		this.template.convertAndSend("/topic",  ciudad);
+
+		this.template.convertAndSend("/topic", ciudad);
 	}
-	
-	
+
 	// Lista de Boards
 	@GetMapping("/boards")
 	public List<HashMap<String, Object>> get() {
@@ -73,10 +69,7 @@ public class BoardRestController {
 			HashMap<String, Ciudad> ciudades = new HashMap<>();
 
 			for (Ciudad ciudad : board.getCiudades()) {
-				System.out.println("En ciudad: " + ciudad.getNombre());
 				ciudades.put(ciudad.getId() + "", ciudad);
-				// board.getCiudades().add(ciudad);
-				//this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			}
 			map.put("ciudades", ciudades);
 			listado.add(map);
@@ -91,7 +84,7 @@ public class BoardRestController {
 		List<Ciudad> listado = new ArrayList<>();
 		Board board = (Board) boardService.findByNombre(nombre);
 		for (Ciudad ciudad : board.getCiudades()) {
-			//this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
+			// this.onReceiveMessage("Ciudad agregada " + ciudad.getNombre());
 			System.out.println("Ciudad agregada: " + ciudad.getNombre());
 			listado.add(ciudad);
 		}
@@ -108,7 +101,7 @@ public class BoardRestController {
 	@GetMapping("/boards/nombre/{usuario}")
 	public List<Board> showByNombre(@PathVariable String usuario) {
 
-		return (List<Board>)boardService.findByUsuario(usuario);
+		return (List<Board>) boardService.findByUsuario(usuario);
 	}
 
 	// Obtener una ciudad por ID
@@ -117,14 +110,6 @@ public class BoardRestController {
 		System.out.println("ID Recibido: " + id);
 		return ciudadService.findById(id);
 	}
-	/*
-	 * @GetMapping("/boards/Eciudades/{id}") public String showC(@PathVariable Long
-	 * id, Map<String, Object> model) { System.out.println("ID Recibido: " + id);
-	 * model.put("cliente",ciudadService.findById(id)); model.put("titulo",
-	 * "Editar"); return "/board/formCiudad";
-	 * 
-	 * }
-	 */
 
 	@PostMapping("/boards")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -137,7 +122,7 @@ public class BoardRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ciudad createC(@RequestBody Ciudad ciudad) throws IOException, ParseException {
 		obtenerTemperatura(ciudad);
-		
+
 		return ciudadService.save(ciudad);
 	}
 
@@ -145,13 +130,9 @@ public class BoardRestController {
 	@PutMapping("/boards/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Board update(@RequestBody Board board, @PathVariable Long id) {
-		System.out.println("Editar board: " + board.getNombre());
+
 		Board boardActual = boardService.findById(id);
-		System.out.println("Board actual: " + boardActual.getNombre());
 		boardActual.setNombre(board.getNombre());
-
-		System.out.println("Board editado: " + boardActual.getNombre());
-
 		return boardService.save(boardActual);
 	}
 
@@ -169,23 +150,15 @@ public class BoardRestController {
 	@DeleteMapping("/boards/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
-		System.out.println("Eliminar board con ID " + id);
 		boardService.delete(id);
 	}
 
 	@DeleteMapping("/boards/ciudades/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteC(@PathVariable Long id) {
-		System.out.println("Ciudad a eliminar " + id);
 		ciudadService.deleteById(id);
-		System.out.println("Ciudad eliminada");
 	}
 
-	
-
-	//@GetMapping("/boards/yahoo", produces = MediaType.APPLICATION_JSON_VALUE)
-	//@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	//public @ResponseBody String yahoo() {
 	@GetMapping("/boards/yahoo")
 	public Ciudad obtenerTemperatura(Ciudad ciudadR) throws IOException, ParseException {
 		String resultado = "";
@@ -196,59 +169,29 @@ public class BoardRestController {
 		headers.set("Access-Control-Allow-Origin", "*");
 		headers.set("Age", "0");
 		headers.set("Connection", "keep-alive");
-		String resourceURL = "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + ciudad.getNombre() + "') and u='C'&format=json";
-		//HttpEntity<String>entity = new HttpEntity<String>(headers);
-		//ResponseEntity<Yahoo> responseEntity = restTemplate.exchange(resourceURL, HttpMethod.GET,entity,Yahoo.class);
-		
-		String yahoo2 = new RestTemplate().getForObject(resourceURL , String.class);
-		
-		System.out.println(yahoo2);
-		
-		 ObjectMapper mapper = new ObjectMapper();
-		    JsonNode actualObj = mapper.readTree(yahoo2);
-		 
-		    Iterator<JsonNode>iterator = actualObj.elements();
-		    
-		    if (iterator.hasNext()) {
-		    JsonNode object = iterator.next();
-		    System.out.println("texto: " + object.get("results"));
-		    JsonNode results = object.get("results");
-		    
-		    JsonNode channel = results.get("channel");
-		    JsonNode item = channel.get("item");
-		    //System.out.println("Item: " + condition.get("temp"));
-		    JsonNode condition = item.get("condition");
-		    System.out.println("Condition: " + condition.get("temp"));	
-		    JsonNode temp = condition.get("temp");
-		    JsonNode date = condition.get("date");
-		    ciudad.setTemperatura(temp.asText());
-		    
-		  /*  System.out.println("Fecha: " + date);
-		    String date_s = date.toString();
-		    SimpleDateFormat dt = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm aa z"); 
-		    Date date2 = null;// = dt.parse(date_s); 
-		    SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
-		    try {
-		        date2 = dt.parse( date_s );
-		        
-			     
-		     } catch ( ParseException e ) {
-		         e.printStackTrace();
-		         if( date2 != null ) {
-		        	 String formattedDate = "";
-				     formattedDate = dt1.format( date2 );
-				     System.out.println(formattedDate);
-				     }
-		     }
-		    }*/
+		String resourceURL = "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='"
+				+ ciudad.getNombre() + "') and u='C'&format=json";
 
+		String yahoo2 = new RestTemplate().getForObject(resourceURL, String.class);
 
-		
-		
-		
-		    }
-		
-			return ciudad;
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode actualObj = mapper.readTree(yahoo2);
+
+		Iterator<JsonNode> iterator = actualObj.elements();
+
+		if (iterator.hasNext()) {
+			JsonNode object = iterator.next();
+			JsonNode results = object.get("results");
+
+			JsonNode channel = results.get("channel");
+			JsonNode item = channel.get("item");
+			JsonNode condition = item.get("condition");
+			System.out.println("Condition: " + condition.get("temp"));
+			JsonNode temp = condition.get("temp");
+			JsonNode date = condition.get("date");
+			ciudad.setTemperatura(temp.asText());
+
+		}
+		return ciudad;
 	}
-
 }

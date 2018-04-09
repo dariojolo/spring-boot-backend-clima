@@ -29,7 +29,7 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
-		
+		/*
 		Board board2 = new Board();
 		board2.setId(3L);
 		board2.setNombre("Las ciudades de Dario");
@@ -83,7 +83,7 @@ public class SpringBootBackendClimaApplication implements CommandLineRunner{
 		
 		boardService.save(board2);
 		
-		boardService.save(board3);
+		boardService.save(board3);*/
         
 	}
 }
